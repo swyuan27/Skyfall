@@ -63,6 +63,8 @@
         
         var sphereGeometry = new THREE.SphereGeometry(1,32,32);
         var material2 = new THREE.MeshLambertMaterial({color: 0xffff00});
+        material2.transparent=true;
+        material2.opacity=0.8;
         var mesh = new THREE.Mesh(sphereGeometry,material2);
         mesh.name="sphere";
         scene.add(mesh);
