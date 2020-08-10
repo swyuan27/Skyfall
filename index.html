@@ -192,6 +192,7 @@
                         test =1;
                     }
                     */
+                    AllObjects[i].material.color.set(0xABCDEC);
 
                     //Randomly animates the blocks closest to the ball
                     if(300*Math.random()<1&&AllObjects[i].position.distanceToSquared(object.position)<=1000*(BoundingSphere.radius*BoundingSphere.radius)){
@@ -227,7 +228,7 @@
                             if(AllBuffs[i].name==="Orange"){
                                 
                             SlowBuff=1;
-                            //BuffClock=1;
+                            BuffClock=1;
                             }
                             if(AllBuffs[i].name==="Green"){
                                 
@@ -236,10 +237,11 @@
                             sphereGeometry.scale(0.5,0.5,0.5);
                             }
                             
-                            //BuffClock=1;
+                            BuffClock=1;
                             }
                             if(AllBuffs[i].name==="Pink"){
-                                
+                            BuffClock=1;    
+                            
                             HighlightBuff=1;
                             }
                             /*
@@ -266,6 +268,18 @@
                     
                     BuffClock++;
                     
+                }
+                if(HighlightBuff){
+                    BuffClock++;
+                    //console.log(intersects.length);
+                    for( var i=0; i<intersects.length;++i){
+                        //console.log(intersects[i].object.color);
+                        if(!(intersects[i].object.name==="Orange"||intersects[i].object.name==="Green"||intersects[i].object.name==="Pink")){
+                            
+                        
+                        intersects[i].object.material.color.set("#4A235A");
+                        }
+                    }
                 }
                 if(BuffClock>300){
 
