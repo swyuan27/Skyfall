@@ -71,17 +71,40 @@
         var DestroyBlockBuff=0;
         var BuffClock=0;
 
-        for(var i=0;i<1000;++i){
+        for(var i=0;i<250;++i){
             var TorusGeometry = new THREE.TorusGeometry(0.5,.1,30,10);
             var material = new THREE.MeshBasicMaterial( { color: 0xFF6700 } );
             
             var torus = new THREE.Mesh( TorusGeometry, material );
             torus.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
             //torus.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
-            torus.name = "torus"+i;
+            torus.name = "Orange";
             scene.add( torus );
             AllBuffs.push(torus);
         }
+        for(var i=0;i<250;++i){
+            var TorusGeometry = new THREE.TorusGeometry(0.5,.1,30,10);
+            var material = new THREE.MeshBasicMaterial( { color: 0x32CD32 } );
+            
+            var torus = new THREE.Mesh( TorusGeometry, material );
+            torus.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
+            //torus.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
+            torus.name = "Green";
+            scene.add( torus );
+            AllBuffs.push(torus);
+        }
+        for(var i=0;i<250;++i){
+            var TorusGeometry = new THREE.TorusGeometry(0.5,.1,30,10);
+            var material = new THREE.MeshBasicMaterial( { color: 0xff69b4 } );
+            
+            var torus = new THREE.Mesh( TorusGeometry, material );
+            torus.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
+            //torus.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
+            torus.name = "Pink";
+            scene.add( torus );
+            AllBuffs.push(torus);
+        }
+
         
         
         var sphereGeometry = new THREE.SphereGeometry(1,32,32);
@@ -201,7 +224,24 @@
                 for(var i=0; i<AllBuffs.length;++i){
                     if(AllBuffs[i].position.distanceToSquared(object.position)<=2*(BoundingSphere.radius*BoundingSphere.radius)){
                             //Buffs
+                            if(AllBuffs[i].name==="Orange"){
+                                
                             SlowBuff=1;
+                            //BuffClock=1;
+                            }
+                            if(AllBuffs[i].name==="Green"){
+                                
+                            SmallBall=1;
+                            if(BuffClock==0){
+                            sphereGeometry.scale(0.5,0.5,0.5);
+                            }
+                            
+                            //BuffClock=1;
+                            }
+                            if(AllBuffs[i].name==="Pink"){
+                                
+                            HighlightBuff=1;
+                            }
                             /*
                             
                                 1. Slow ball (30%)
@@ -222,15 +262,23 @@
                     camera.position.z+=.1;
                     light.position.z+=.1;
                 }
-                if(BuffClock>150){
+                if(SmallBall){
+                    
+                    BuffClock++;
+                    
+                }
+                if(BuffClock>300){
 
                     BuffClock=0;
                     SlowBuff=0;
+                    if(SmallBall){
+                        sphereGeometry.scale(2,2,2);
+                    }
                     SmallBall=0;
                     HighlightBuff=0;
                     DestroyBlockBuff=0;
                     BuffClock=0;
-                    
+
                 }
                 
                 if(!test){
