@@ -24,9 +24,13 @@
     <button id ="starter" onclick="StartGame()">Start</button>
     <button id ="restart" style="display:none" onclick="RestartGame()">Restart</button>
     <script>
+
+        
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
         camera.position.z=15;
+        //camera.position.y=3;
+        //camera.rotation.x=-0.3;
         // fog = new THREE.Fog(0xd5c7e8);
         //scene.add(fog);
         
@@ -34,6 +38,7 @@
         renderer.setClearColor("#EEEEEE");
         renderer.setSize(window.innerWidth,window.innerHeight);
         document.body.appendChild(renderer.domElement);
+        // Responsive web page
         window.addEventListener('resize', () =>{
             renderer.setSize(window.innerWidth,window.innerHeight);
             camera.aspect= window.innerWidth/window.innerHeight;
@@ -48,16 +53,34 @@
         var mouse = new THREE.Vector2();
         var geometry = new THREE.BoxGeometry(1,1,1);
         var AllObjects=[]; //
-        for(var i=0;i<11000;++i){
-        var material = new THREE.MeshLambertMaterial({color: 0xABCDEC});
-        var mesh = new THREE.Mesh(geometry,material);
-        mesh.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
-        mesh.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
-        //mesh.rotation.set(30,30,30);
-        mesh.scale.set(1,2,1)
-        mesh.name="square"+i;
-        scene.add(mesh);
-        AllObjects.push(mesh); //
+        for(var i=0;i<12000;++i){
+            var material = new THREE.MeshLambertMaterial({color: 0xABCDEC});
+            var mesh = new THREE.Mesh(geometry,material);
+            mesh.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
+            mesh.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
+            //mesh.rotation.set(30,30,30);
+            mesh.scale.set(1,2,1)
+            mesh.name="square"+i;
+            scene.add(mesh);
+            AllObjects.push(mesh); 
+        }
+        var AllBuffs =[];
+        var SlowBuff =0;
+        var SmallBall =0;
+        var HighlightBuff =0;
+        var DestroyBlockBuff=0;
+        var BuffClock=0;
+
+        for(var i=0;i<1000;++i){
+            var TorusGeometry = new THREE.TorusGeometry(0.5,.1,30,10);
+            var material = new THREE.MeshBasicMaterial( { color: 0xFF6700 } );
+            
+            var torus = new THREE.Mesh( TorusGeometry, material );
+            torus.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
+            //torus.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
+            torus.name = "torus"+i;
+            scene.add( torus );
+            AllBuffs.push(torus);
         }
         
         
@@ -68,10 +91,12 @@
         var mesh = new THREE.Mesh(sphereGeometry,material2);
         mesh.name="sphere";
         scene.add(mesh);
-
+        //adding light always behind ball
         var light = new THREE.PointLight(0xFFFFFF,1,500);
         light.position.set(10,0,25);
         scene.add(light);
+
+        //Starting settings
         var xSpeed =0;
         var ySpeed=0;
         var test =1;
@@ -97,7 +122,7 @@
             camera.position.x=0;
             camera.position.y=0;
             AllObjects=[];
-            for(var i=0;i<11000;++i){
+            for(var i=0;i<12000;++i){
                 scene.remove(scene.getObjectByName("square"+i));
                 var material = new THREE.MeshLambertMaterial({color: 0xABCDEC});
                 var mesh = new THREE.Mesh(geometry,material);
@@ -144,6 +169,8 @@
                         test =1;
                     }
                     */
+
+                    //Randomly animates the blocks closest to the ball
                     if(300*Math.random()<1&&AllObjects[i].position.distanceToSquared(object.position)<=1000*(BoundingSphere.radius*BoundingSphere.radius)){
                     this.tl = new TimelineMax().delay(.3);
                     this.tl.to(AllObjects[i].scale, 1, {x: 2, ease: Expo.easeout});
@@ -158,7 +185,7 @@
                     }
                     if(AllObjects[i].position.distanceToSquared(object.position)<=2*(BoundingSphere.radius*BoundingSphere.radius)||object.position.x>10||
                     object.position.x<-10||object.position.y>10||object.position.y<-10){
-                        //window.alert("Collision");
+                        
                         document.getElementById("end").style.display ="block";
                         document.getElementById("end").innerHTML="Game Over. Score: "+Score;
                         document.getElementById("score").style.display="none";
@@ -171,7 +198,40 @@
                         test =1;
                     }
                 }
-               
+                for(var i=0; i<AllBuffs.length;++i){
+                    if(AllBuffs[i].position.distanceToSquared(object.position)<=2*(BoundingSphere.radius*BoundingSphere.radius)){
+                            //Buffs
+                            SlowBuff=1;
+                            /*
+                            
+                                1. Slow ball (30%)
+                                2. Small ball (40%)
+                                3. Highlight intersecting blocks
+                                4. Destroy nearby blocks
+                                
+
+                                
+                                
+                            */
+                            
+                    }
+                }
+                if(SlowBuff){
+                    BuffClock++;
+                    object.position.z+=.1;
+                    camera.position.z+=.1;
+                    light.position.z+=.1;
+                }
+                if(BuffClock>150){
+
+                    BuffClock=0;
+                    SlowBuff=0;
+                    SmallBall=0;
+                    HighlightBuff=0;
+                    DestroyBlockBuff=0;
+                    BuffClock=0;
+                    
+                }
                 
                 if(!test){
                 object.position.z-=.3;
@@ -189,6 +249,14 @@
                 renderer.render(scene,camera);
             
         }
+
+                if(test){
+                    SlowBuff=0;
+                    SmallBall=0;
+                    HighlightBuff=0;
+                    DestroyBlockBuff=0;                    
+                    BuffClock=0;
+                }
        
         /*
         function onMouseMove(event){
