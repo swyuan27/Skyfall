@@ -23,9 +23,12 @@
 
     <button id ="starter" onclick="StartGame()">Start</button>
     <button id ="restart" style="display:none" onclick="RestartGame()">Restart</button>
-    <iframe width="0" height="0" style="display:none"  src="https://www.youtube.com/embed/HSOtku1j600?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+    <iframe id ="music" width="100" height="1000" style="display:none"  src="https://www.youtube.com/embed/HSOtku1j600?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
     <script>
-
+        var vid = document.getElementById("music");
+        vid.volume = 0.2;
         
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
