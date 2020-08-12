@@ -26,9 +26,15 @@
     
     <!--<iframe id ="music" width="100" height="1000" style="display:none"  src="https://www.youtube.com/embed/HSOtku1j600?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     -->
+    
     <audio id = "music" src="LoveDramatic.mp3" loop controls autoplay style = "display:none">Your Browser does not support the audio element</audio>
 
     <script>
+        document.addEventListener('click', musicPlay);
+        function musicPlay() {
+            document.getElementById('music').play();
+            document.removeEventListener('click', musicPlay);
+        }
         var vid = document.getElementById("music");
         vid.volume = 0.05;
         
