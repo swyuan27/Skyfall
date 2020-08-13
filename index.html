@@ -86,10 +86,11 @@
         var GreenBuff=0;
 
         var TorusGeometry = new THREE.TorusGeometry(0.5,.1,30,10);
-        var OrangeMaterial = new THREE.MeshBasicMaterial( { color: 0xFF6700 } );
-        var Greenmaterial = new THREE.MeshBasicMaterial( { color: 0x32CD32 } );
-        var Pinkmaterial = new THREE.MeshBasicMaterial( { color: 0xff69b4 } );
+        
+       
+        
         for(var i=0;i<250;++i){
+            var OrangeMaterial = new THREE.MeshBasicMaterial( { color: 0xFF6700 } );
             var torus = new THREE.Mesh( TorusGeometry, OrangeMaterial );
             torus.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
             //torus.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
@@ -98,6 +99,7 @@
             AllBuffs.push(torus);
         }
         for(var i=0;i<250;++i){
+            var Greenmaterial = new THREE.MeshBasicMaterial( { color: 0x32CD32 } );
             var torus = new THREE.Mesh( TorusGeometry, Greenmaterial );
             torus.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
             //torus.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
@@ -106,6 +108,7 @@
             AllBuffs.push(torus);
         }
         for(var i=0;i<250;++i){
+            var Pinkmaterial = new THREE.MeshBasicMaterial( { color: 0xff69b4 } );
             var torus = new THREE.Mesh( TorusGeometry, Pinkmaterial );
             torus.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
             //torus.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
@@ -172,11 +175,12 @@
             scene.remove(scene.getObjectByName("Pink"));
             }
             var TorusGeometry = new THREE.TorusGeometry(0.5,.1,30,10);      
-            var OrangeMaterial = new THREE.MeshBasicMaterial( { color: 0xFF6700 } );
-            var Greenmaterial = new THREE.MeshBasicMaterial( { color: 0x32CD32 } );
-            var Pinkmaterial = new THREE.MeshBasicMaterial( { color: 0xff69b4 } );
+            
+            
+            
             for(var i=0;i<250;++i){
                 var torus = new THREE.Mesh( TorusGeometry, OrangeMaterial );
+                var OrangeMaterial = new THREE.MeshBasicMaterial( { color: 0xFF6700 } );
                 torus.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
                 //torus.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
                 torus.name = "Orange";
@@ -184,6 +188,7 @@
                 AllBuffs.push(torus);
              }
             for(var i=0;i<250;++i){
+                var Greenmaterial = new THREE.MeshBasicMaterial( { color: 0x32CD32 } );
                 var torus = new THREE.Mesh( TorusGeometry, Greenmaterial );
                 torus.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
                    //torus.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
@@ -192,6 +197,7 @@
                 AllBuffs.push(torus);
             }
             for(var i=0;i<250;++i){
+                var Pinkmaterial = new THREE.MeshBasicMaterial( { color: 0xff69b4 } );
                 var torus = new THREE.Mesh( TorusGeometry, Pinkmaterial );
                 torus.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
                 //torus.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
@@ -259,7 +265,7 @@
 
                     //This determines if game is over
                     //original 2*
-                    if(AllObjects[i].position.distanceToSquared(object.position)<=1.5*(BoundingSphere.radius*BoundingSphere.radius)||object.position.x>10||
+                    if(AllObjects[i].position.distanceToSquared(object.position)<=2*(BoundingSphere.radius*BoundingSphere.radius)||object.position.x>10||
                     object.position.x<-10||object.position.y>10||object.position.y<-10){
                         
                         document.getElementById("end").style.display ="block";
@@ -283,17 +289,25 @@
                             SlowBuff=1;
                             BuffClock=1;
                             }
+
                             if(AllBuffs[i].name==="Green"){
                                 
                             SmallBall=1;
                             
                             if(!GreenBuff){
                             sphereGeometry.scale(0.5,0.5,0.5);
+                            //window.alert("smaller");
+                            /*
+                            console.log(AllBuffs[i].position);
+                            AllBuffs[i].material.color.set("#4A235A");
+                            console.log(object.position);
+                            */
                             GreenBuff=1;
                             }
                             
                             BuffClock=1;
                             }
+
                             if(AllBuffs[i].name==="Pink"){
                             BuffClock=1;    
                             
@@ -305,8 +319,6 @@
                                 2. Small ball (40%)
                                 3. Highlight intersecting blocks
                                 4. Destroy nearby blocks
-                                
-
                                 
                                 
                             */
@@ -325,6 +337,8 @@
                     
                 }
                 if(HighlightBuff){
+                    scene.fog.density =0.02;
+                    material2.opacity=0.4;
                     BuffClock++;
                     //console.log(intersects.length);
                     for( var i=0; i<intersects.length;++i){
@@ -344,6 +358,8 @@
                         sphereGeometry.scale(2,2,2);
                         GreenBuff =0;
                     }
+                    scene.fog.density=0.04;
+                    material2.opacity=0.8;
                     SmallBall=0;
                     HighlightBuff=0;
                     DestroyBlockBuff=0;
