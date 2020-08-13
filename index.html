@@ -26,11 +26,11 @@
     
     <!--<iframe id ="music" width="100" height="1000" style="display:none"  src="https://www.youtube.com/embed/HSOtku1j600?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     -->
-    <!--    
+    
     <audio id = "music" src="LoveDramatic.mp3" loop controls autoplay style = "display:none">Your Browser does not support the audio element</audio>
-    -->
+
     <script>
-        /*
+        
         document.addEventListener('click', musicPlay);
         function musicPlay() {
             document.getElementById('music').play();
@@ -38,7 +38,7 @@
         }
         var vid = document.getElementById("music");
         vid.volume = 0.05;
-        */
+        
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
         camera.position.z=15;
@@ -86,9 +86,6 @@
         var GreenBuff=0;
 
         var TorusGeometry = new THREE.TorusGeometry(0.5,.1,30,10);
-        
-       
-        
         for(var i=0;i<250;++i){
             var OrangeMaterial = new THREE.MeshBasicMaterial( { color: 0xFF6700 } );
             var torus = new THREE.Mesh( TorusGeometry, OrangeMaterial );
@@ -169,18 +166,29 @@
                 scene.add(mesh);
                 AllObjects.push(mesh); //
             }
+            AllBuffs=[];
             for( var i=0;i<250;++i){
-            scene.remove(scene.getObjectByName("Orange"));
-            scene.remove(scene.getObjectByName("Green"));
-            scene.remove(scene.getObjectByName("Pink"));
+            const Deleteable1 = scene.getObjectByName("Orange");
+            Deleteable1.geometry.dispose();
+            Deleteable1.material.dispose();
+            scene.remove(Deleteable1);
+
+            const Deleteable2 = scene.getObjectByName("Green");
+            Deleteable2.geometry.dispose();
+            Deleteable2.material.dispose();
+            scene.remove(Deleteable2);
+
+            const Deleteable3 = scene.getObjectByName("Pink");
+            Deleteable3.geometry.dispose();
+            Deleteable3.material.dispose();
+            scene.remove(Deleteable3);
+           
             }
+            
             var TorusGeometry = new THREE.TorusGeometry(0.5,.1,30,10);      
-            
-            
-            
             for(var i=0;i<250;++i){
-                var torus = new THREE.Mesh( TorusGeometry, OrangeMaterial );
                 var OrangeMaterial = new THREE.MeshBasicMaterial( { color: 0xFF6700 } );
+                var torus = new THREE.Mesh( TorusGeometry, OrangeMaterial );
                 torus.position.set(20*(Math.random()-0.5),20*(Math.random()-0.5),5000*(Math.random()-1.005));
                 //torus.rotation.set(90*(Math.random()-0.5),0,90*(Math.random()-0.5));
                 torus.name = "Orange";
@@ -297,11 +305,6 @@
                             if(!GreenBuff){
                             sphereGeometry.scale(0.5,0.5,0.5);
                             //window.alert("smaller");
-                            /*
-                            console.log(AllBuffs[i].position);
-                            AllBuffs[i].material.color.set("#4A235A");
-                            console.log(object.position);
-                            */
                             GreenBuff=1;
                             }
                             
@@ -340,9 +343,7 @@
                     scene.fog.density =0.02;
                     material2.opacity=0.4;
                     BuffClock++;
-                    //console.log(intersects.length);
                     for( var i=0; i<intersects.length;++i){
-                        //console.log(intersects[i].object.color);
                         if(!(intersects[i].object.name==="Orange"||intersects[i].object.name==="Green"||intersects[i].object.name==="Pink")){
                             
                         
@@ -383,15 +384,19 @@
                 renderer.render(scene,camera);
             
         }
-
+/*
                 if(test){
                     SlowBuff=0;
+                    if(SmallBall){
+                        sphereGeometry.scale(2,2,2);
+                        GreenBuff =0;
+                    }
                     SmallBall=0;
                     HighlightBuff=0;
                     DestroyBlockBuff=0;                    
                     BuffClock=0;
                 }
-       
+       */
         /*
         function onMouseMove(event){
             event.preventDefault();
